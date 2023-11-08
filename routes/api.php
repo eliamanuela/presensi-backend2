@@ -31,6 +31,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // API route for logout user
     Route::post('/logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
     Route::get('/get-presensi',  [App\Http\Controllers\API\PresensiController::class, 'getPresensis']);
+    Route::get('/get-total-presensi',  [App\Http\Controllers\API\PresensiController::class, 'getTotalPresensis']);
 
     Route::post('save-presensi', [App\Http\Controllers\API\PresensiController::class, 'savePresensi']);
+    Route::post('save-total-presensi', [App\Http\Controllers\API\PresensiController::class, 'saveTotalPresensi']);
 });

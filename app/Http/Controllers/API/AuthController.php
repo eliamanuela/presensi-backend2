@@ -4,8 +4,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Auth;
-use Validator;
+use  Illuminate\Support\Facades\Validator;
+use  Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -19,7 +19,7 @@ class AuthController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors());       
+            return response()->json($validator->errors());
         }
 
         $user = User::create([
@@ -56,13 +56,17 @@ class AuthController extends Controller
             ]);
     }
 
-    // method for user logout and delete token
     public function logout()
     {
-        auth()->user()->tokens()->delete();
+        $user = Auth::user();
+
+        // Revoke the user's token
+        $user->tokens->each(function ($token, $key) {
+            $token->revoke();
+        });
 
         return [
-            'message' => 'You have successfully logged out and the token was successfully deleted'
+            'message' => 'You have successfully logged out, and the token was successfully revoked'
         ];
     }
 }

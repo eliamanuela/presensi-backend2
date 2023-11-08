@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use  Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +24,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('user');
 Route::get('/create-user', [App\Http\Controllers\UserController::class, 'create'])->name('user');
 Route::post('/store-user', [App\Http\Controllers\UserController::class, 'store'])->name('user-store');
+Route::get('/presence', [App\Http\Controllers\presenceController::class, 'presence_index'])->name('presence_index');
+Route::post('/presence-store', [App\Http\Controllers\presenceController::class, 'presence_store'])->name('presence_store');

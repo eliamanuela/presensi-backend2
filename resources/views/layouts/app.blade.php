@@ -26,8 +26,8 @@
 	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
-    
-    
+
+
 </head>
 <body>
     <div id="app">
@@ -69,7 +69,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{url('user')}}">Daftar User</a>
-                                    
+                                    <a href="{{ route('presence_index') }}" class="dropdown-item">Presence</a>
                                     <a class="dropdown-item" href="{{url('home')}}">Rekap Presensi</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

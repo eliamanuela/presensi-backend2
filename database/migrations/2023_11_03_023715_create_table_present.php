@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTablePresensi extends Migration
+class CreateTablePresent extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateTablePresensi extends Migration
      */
     public function up()
     {
-        Schema::create('presensis', function (Blueprint $table) {
+        Schema::create('table_present', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->decimal('latitude', 12,5);
-            $table->decimal('longitude', 12,5);
-            $table->date('tanggal');
-            $table->time('masuk');
-            $table->time('pulang')->nullable();
+            $table->bigInteger('user_id');
+            $table->bigInteger('bulan_id');
+            $table->integer('presence');
+            $table->integer('total_presence')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ class CreateTablePresensi extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_presensi');
+        Schema::dropIfExists('table_present');
     }
 }

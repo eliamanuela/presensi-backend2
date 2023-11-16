@@ -5,33 +5,32 @@ namespace App\Http\Controllers;
 use App\Models\bulanModel;
 use App\Models\presence;
 use App\Models\Presensi;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class presenceController extends Controller
 {
-    public function presence_index() {
+    public function presence_create() {
         $bulan = bulanModel::all();
-        return view('presence.index', compact([
-            'bulan'
+        $user = User::all();
+        return view('presence.create', compact([
+            'bulan',
+            'user'
         ]));
     }
     public function presence_store(Request $request)
 {
-    $user = Auth::user()->id;
-    // Menghitung total data Presensi dengan filter user_id
-    $totalPresensi = Presensi::where('user_id', $user)->count();
-    // dd($totalPresensi);
     $request->validate([
+        'user_id' => 'required|exists:users,id',
         'bulan_id' => 'required|exists:bulan,id',
         'presence' => 'required|numeric',
     ]);
 
     presence::create([
-        'user_id'=>$user,
+        'user_id'=>$request->user_id,
         'bulan_id' => $request->bulan_id,
         'presence' => $request->presence,
-        'total_presence' => $totalPresensi
     ]);
 
     session()->flash('success', 'Data berhasil disimpan.');

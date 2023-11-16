@@ -15,7 +15,7 @@ class UserController extends Controller
 
     function index()
     {
-        $users = User::get();
+        $users = User::where('role', 'user')->get();
         return view('user', [
             'users' =>$users
         ]);
@@ -28,9 +28,11 @@ class UserController extends Controller
 
     function store(Request $request)
     {
+        $role = "user";
         User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'role' => $role,
             'password' => Hash::make($request->password),
         ]);
 

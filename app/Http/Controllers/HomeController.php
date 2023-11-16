@@ -33,12 +33,18 @@ class HomeController extends Controller
             $datetime = Carbon::parse($item->tanggal)->locale('id');
 
             $datetime->settings(['formatFunction' => 'translatedFormat']);
-            
+
             $item->tanggal = $datetime->format('l, j F Y');
         }
         // dd($presensis);
-        return view('home', [
-            'presensis' => $presensis
-        ]);
+        $users = User::query()
+        // ->join('other_table', 'users.id', '=', 'other_table.user_id')
+        ->select('users.*')
+        ->paginate(5);
+
+        return view('home',compact([
+            'presensis',
+            'users',
+        ]));
     }
 }

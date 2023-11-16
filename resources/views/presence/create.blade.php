@@ -17,12 +17,20 @@
                                 @foreach ($bulan as $item)
                                     <option value="{{$item->id}}"> {{$item->nama_bulan}}</option>
                                 @endforeach
-                        </select>
+                            </select>
                         </div>
                         <div class="form-group mt-2">
                             <label>Presence</label>
                             <input type="number" class="form-control" name="presence" required>
-
+                        </div>
+                        <div class="form-group mt-2">
+                            <label>User</label>
+                            <select name="user_id" class="form-control" required>
+                                    <option></option>
+                                @foreach ($user as $data)
+                                    <option value="{{$data->id}}"> {{$data->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <button type="submit" class="btn btn-primary mt-3">Submit</button>

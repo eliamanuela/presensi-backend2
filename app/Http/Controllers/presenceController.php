@@ -11,14 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class presenceController extends Controller
 {
-    public function presence_create() {
-        $bulan = bulanModel::all();
-        $user = User::all();
-        return view('presence.create', compact([
-            'bulan',
-            'user'
-        ]));
-    }
+
     public function presence_store(Request $request)
 {
     $request->validate([

@@ -28,16 +28,20 @@ class UserController extends Controller
 
     function store(Request $request)
     {
+        $status = "off";
         $role = "user";
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'role' => $role,
+            'status' => $status,
             'password' => Hash::make($request->password),
         ]);
 
 
         // return redirect()->route('user');
-        return redirect()->action('App\Http\Controllers\UserController@index');
+        session()->flash('success', 'Data berhasil disimpan.');
+
+        return redirect()->route('home');
     }
 }

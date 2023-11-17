@@ -98,6 +98,47 @@
                 {{ $users->links() }} <!-- Menampilkan tombol paginasi -->
             </div>
         </div>
+
+
+        <!-- Untuk Presence -->
+
+        <div class="col-12 col-md-6 col-xxl-3 d-flex order-1 order-xxl-1">
+            <div class="card flex-fill">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">Total Kehadiran</h5>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCalender">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                        </svg>
+                    </button>
+                </div>
+                <table class="table table-hover my-0">
+                    <thead>
+                        <tr>
+                            <th>Bulan</th>
+                            <th class="d-none d-xl-table-cell">Kehadiran</th>
+                            <th class="d-none d-xl-table-cell">User</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($kehadiran as $data)
+                        <tr>
+                            <td>{{$data->nama_bulan}}</td>
+                            <td class="d-none d-xl-table-cell">{{$data->presence}}</td>
+                            <td class="d-none d-xl-table-cell">{{$data->name}}</td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="5" style="padding: 20px; font-size: 20px; text-align: center;">
+                                <span>Tidak ditemukan data user</span>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+                {{ $kehadiran->links() }} <!-- Menampilkan tombol paginasi -->
+            </div>
+        </div>
     </div>
 </div>
 @endsection

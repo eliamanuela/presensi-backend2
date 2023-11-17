@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\bulanModel;
+use App\Models\presence;
 use Illuminate\Http\Request;
 use App\Models\Presensi;
 use App\Models\User;
@@ -36,15 +38,30 @@ class HomeController extends Controller
 
             $item->tanggal = $datetime->format('l, j F Y');
         }
-        // dd($presensis);
-        $users = User::query()
-        // ->join('other_table', 'users.id', '=', 'other_table.user_id')
-        ->select('users.*')
+        $kehadiran = Presence::query()
+        ->select('table_present.presence', 'bulan.nama_bulan', 'users.name')
+        ->join('bulan', 'table_present.bulan_id', '=', 'bulan.id')
+        ->join('users', 'table_present.user_id', '=', 'users.id')
         ->paginate(5);
+
+        $users = User::query()
+        ->select('users.*')
+        ->where('role', 'user')
+        ->paginate(5);
+        $user = User::query()
+        ->select('users.name', 'users.id')
+        ->where('role', 'user')
+        ->get();
+        $bulan = bulanModel::query()
+            ->select('bulan.id','bulan.nama_bulan')
+            ->get();
 
         return view('home',compact([
             'presensis',
             'users',
+            'user',
+            'kehadiran',
+            'bulan',
         ]));
     }
 }

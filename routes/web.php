@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\profilController;
 use Illuminate\Support\Facades\Route;
 use  Illuminate\Support\Facades\Auth;
 
@@ -26,5 +27,6 @@ Route::get('/home1', function () {
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('user');
 Route::post('/store-user', [App\Http\Controllers\UserController::class, 'store'])->name('user-store');
-Route::get('/presence', [App\Http\Controllers\presenceController::class, 'presence_create'])->name('presence_create');
+// Route::get('/presence', [App\Http\Controllers\presenceController::class, 'presence_create'])->name('presence_create');
 Route::post('/presence-store', [App\Http\Controllers\presenceController::class, 'presence_store'])->name('presence_store');
+Route::get('profil', [profilController::class, 'profil_index'])->name('profil_index');

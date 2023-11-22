@@ -15,4 +15,13 @@ class presence extends Model
         'presence',
         'total_presence',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+    public function bulanModel()
+    {
+        return $this->belongsTo(BulanModel::class, 'bulan_id', 'id');
+    }
 }

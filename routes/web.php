@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\profilController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 use  Illuminate\Support\Facades\Auth;
 
@@ -30,3 +31,4 @@ Route::post('/store-user', [App\Http\Controllers\UserController::class, 'store']
 // Route::get('/presence', [App\Http\Controllers\presenceController::class, 'presence_create'])->name('presence_create');
 Route::post('/presence-store', [App\Http\Controllers\presenceController::class, 'presence_store'])->name('presence_store');
 Route::get('profil', [profilController::class, 'profil_index'])->name('profil_index');
+Route::get('report', [ReportController::class, 'report_index'])->name('report_index');

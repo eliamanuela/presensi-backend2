@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\presence;
 use Illuminate\Http\Request;
 use App\Models\Presensi;
 use  Illuminate\Support\Facades\Auth;
@@ -145,5 +146,23 @@ class PresensiController extends Controller
         ]);
     }
 }
+
+public function getTotalPresence(Request $request)
+{
+    try {
+        $totalPresence = presence::where('user_id', $request->user_id)
+            ->where('bulan_id', $request->bulan_id)
+            ->sum('presence');
+
+        return response()->json([
+            'total_presensi' => $totalPresence,
+            'message' => 'Data dapat'
+        ]);
+    } catch (Exception $e) {
+        return response()->json(['message' => 'Terjadi kesalahan saat mengambil data total presensi: ' . $e->getMessage()
+    ]);
+    }
+}
+
 
 }

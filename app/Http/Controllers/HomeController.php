@@ -47,6 +47,7 @@ class HomeController extends Controller
         $users = User::query()
         ->select('users.*')
         ->where('role', 'user')
+        ->where('status', 'off')
         ->paginate(5);
         $user = User::query()
         ->select('users.name', 'users.id')

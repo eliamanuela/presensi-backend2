@@ -28,17 +28,14 @@ class UserController extends Controller
 
     function store(Request $request)
     {
-        $status = "off";
         $role = "user";
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'role' => $role,
-            'status' => $status,
+            'status' => "off",
             'password' => Hash::make($request->password),
         ]);
-
-
         // return redirect()->route('user');
         session()->flash('success', 'Data berhasil disimpan.');
 

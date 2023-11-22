@@ -8,6 +8,7 @@ use App\Models\Presensi;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class presenceController extends Controller
 {
@@ -20,11 +21,18 @@ class presenceController extends Controller
         'presence' => 'required|numeric',
     ]);
 
-    presence::create([
-        'user_id'=>$request->user_id,
-        'bulan_id' => $request->bulan_id,
-        'presence' => $request->presence,
-    ]);
+    DB::transaction(function () use ($request) {
+        Presence::create([
+            'user_id' => $request->user_id,
+            'bulan_id' => $request->bulan_id,
+            'presence' => $request->presence,
+        ]);
+
+        $user = User::find($request->user_id);
+        $user->update([
+            'status' => "on",
+        ]);
+    });
 
     session()->flash('success', 'Data berhasil disimpan.');
 

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\PresensiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,9 +20,9 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('/register', [App\Http\Controllers\API\AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'register']);
 //API route for login user
-Route::post('/login', [App\Http\Controllers\API\AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login']);
 
 //Protecting Routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -29,10 +31,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
 
     // API route for logout user
-    Route::post('/logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
-    Route::get('/get-presensi',  [App\Http\Controllers\API\PresensiController::class, 'getPresensis']);
-    Route::get('/get-total-presensi',  [App\Http\Controllers\API\PresensiController::class, 'getTotalPresensis']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/get-presensi',  [PresensiController::class, 'getPresensis']);
+    Route::get('/get-total-presensi',  [PresensiController::class, 'getTotalPresensis']);
+    Route::get('/get-total-presence',  [PresensiController::class, 'getTotalPresence']);
 
-    Route::post('save-presensi', [App\Http\Controllers\API\PresensiController::class, 'savePresensi']);
-    Route::post('save-total-presensi', [App\Http\Controllers\API\PresensiController::class, 'saveTotalPresensi']);
+    Route::post('save-presensi', [PresensiController::class, 'savePresensi']);
+    Route::post('save-total-presensi', [PresensiController::class, 'saveTotalPresensi']);
 });

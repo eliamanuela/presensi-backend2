@@ -15,7 +15,7 @@ class UserController extends Controller
 
     function index()
     {
-        $users = User::get();
+        $users = User::where('role', 'user')->get();
         return view('user', [
             'users' =>$users
         ]);
@@ -28,14 +28,17 @@ class UserController extends Controller
 
     function store(Request $request)
     {
+        $role = "user";
         User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'role' => $role,
+            'status' => "off",
             'password' => Hash::make($request->password),
         ]);
-
-
         // return redirect()->route('user');
-        return redirect()->action('App\Http\Controllers\UserController@index');
+        session()->flash('success', 'Data berhasil disimpan.');
+
+        return redirect()->route('home');
     }
 }

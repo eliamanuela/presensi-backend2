@@ -18,7 +18,6 @@ class CreateTablePresent extends Migration
             $table->bigInteger('user_id');
             $table->bigInteger('bulan_id');
             $table->integer('presence');
-            $table->integer('total_presence')->nullable();
             $table->timestamps();
         });
     }

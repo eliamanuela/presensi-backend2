@@ -10,6 +10,7 @@ use  Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Client;
+
 date_default_timezone_set("Asia/Jakarta");
 
 class PresensiController extends Controller
@@ -54,8 +55,8 @@ class PresensiController extends Controller
     {
         $keterangan = "";
         $presensi = Presensi::whereDate('tanggal', '=', date('Y-m-d'))
-                        ->where('user_id', Auth::user()->id)
-                        ->first();
+            ->where('user_id', Auth::user()->id)
+            ->first();
         if ($presensi == null) {
             $presensi = Presensi::create([
                 'user_id' => Auth::user()->id,
@@ -70,10 +71,9 @@ class PresensiController extends Controller
             ];
 
             Presensi::whereDate('tanggal', '=', date('Y-m-d'))->update($data);
-
         }
         $presensi = Presensi::whereDate('tanggal', '=', date('Y-m-d'))
-                 ->first();
+            ->first();
 
         return response()->json([
             'success' => true,
@@ -93,76 +93,90 @@ class PresensiController extends Controller
     }
 
     public function saveTotalPresensi(Request $request)
-{
-    $client = new Client();
-    $yourAuthToken = 'Bearer ' . $request->header('Authorization');
+    {
+        $client = new Client();
+        $yourAuthToken = 'Bearer ' . $request->header('Authorization');
 
-    try {
-        // Lakukan permintaan ke URI API
-        $response = $client->request('GET', 'http://10.0.2.2:8000/api/get-total-presensi', [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $yourAuthToken, // Ganti dengan token otentikasi yang sesuai
-            ],
-        ]);
+        try {
+            // Lakukan permintaan ke URI API
+            $response = $client->request('GET', 'http://10.0.2.2:8000/api/get-total-presensi', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $yourAuthToken, // Ganti dengan token otentikasi yang sesuai
+                ],
+            ]);
 
-        // Periksa kode status respons HTTP
-        if ($response->getStatusCode() == 200) {
-            // Respons berhasil, baca data JSON
-            $totalPresensiData = json_decode($response->getBody(), true);
+            // Periksa kode status respons HTTP
+            if ($response->getStatusCode() == 200) {
+                // Respons berhasil, baca data JSON
+                $totalPresensiData = json_decode($response->getBody(), true);
 
-            // Pastikan Anda telah mendapatkan total_presensi dari respons
-            if (isset($totalPresensiData['total_presensi'])) {
-                $totalPresensi = $totalPresensiData['total_presensi'];
+                // Pastikan Anda telah mendapatkan total_presensi dari respons
+                if (isset($totalPresensiData['total_presensi'])) {
+                    $totalPresensi = $totalPresensiData['total_presensi'];
 
-                // Sekarang Anda dapat menggunakan $totalPresensi untuk memperbarui tabel present
-                $present = Presensi::where('user_id', Auth::user()->id)->first();
+                    // Sekarang Anda dapat menggunakan $totalPresensi untuk memperbarui tabel present
+                    $present = Presensi::where('user_id', Auth::user()->id)->first();
 
-                // Perbarui nilai total_presence dalam tabel present
-                $present->total_presence = $totalPresensi;
+                    // Perbarui nilai total_presence dalam tabel present
+                    $present->total_presence = $totalPresensi;
 
-                // Simpan perubahan
-                $present->save();
+                    // Simpan perubahan
+                    $present->save();
 
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Total presensi berhasil diperbarui dalam tabel present'
-                ]);
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Total presensi berhasil diperbarui dalam tabel present'
+                    ]);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Gagal mendapatkan total presensi dari respons API'
+                    ]);
+                }
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Gagal mendapatkan total presensi dari respons API'
+                    'message' => 'Gagal mengambil data total presensi: Kode status HTTP tidak valid'
                 ]);
             }
-        } else {
+        } catch (Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal mengambil data total presensi: Kode status HTTP tidak valid'
+                'message' => 'Terjadi kesalahan saat mengambil data total presensi: ' . $e->getMessage()
             ]);
         }
-    } catch (Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Terjadi kesalahan saat mengambil data total presensi: ' . $e->getMessage()
-        ]);
     }
-}
 
-public function getTotalPresence(Request $request)
-{
-    try {
-        $totalPresence = presence::where('user_id', $request->user_id)
-            ->where('bulan_id', $request->bulan_id)
-            ->sum('presence');
+    public function getTotalPresence(Request $request)
+    {
+        try {
+            // Mengambil total kehadiran
+            $totalPresensi = Presensi::where('user_id', Auth::user()->id)->count();
 
-        return response()->json([
-            'total_presensi' => $totalPresence,
-            'message' => 'Data dapat'
-        ]);
-    } catch (Exception $e) {
-        return response()->json(['message' => 'Terjadi kesalahan saat mengambil data total presensi: ' . $e->getMessage()
-    ]);
+            // Mengambil data user
+            $user = Auth::user();
+
+            // Mengambil nama bulan berdasarkan bulan_id
+            $presence = presence::where('user_id', Auth::user()->id)->first();
+            $bulanModel = $presence->bulanModel; // Buat relasi di model Presence
+
+            $namabulan = $bulanModel ? $bulanModel->nama_bulan : null;
+
+            $target_kehadiran = Presence::where('user_id', Auth::user()->id)->pluck('presence');
+
+            return response()->json([
+                'success' => true,
+                'total_presensi' => $totalPresensi,
+                'user_id' => $user->id,
+                'name' => $user->name,
+                'nama bulan'    => $namabulan,
+                'target kehadiran'  => $target_kehadiran,
+                'message' => 'Data di temukan'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil data total presensi: ' . $e->getMessage()
+            ]);
+        }
     }
-}
-
-
 }

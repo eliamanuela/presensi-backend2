@@ -45,12 +45,12 @@
                             <div class="column">
                                 <div class="form-group">
                                     <label for="tempat_lahir">Tempat, Tanggal Lahir:</label>
-                                    <input type="text" id="tempat_lahir" value="Jakarta, 01 Januari 1990">
+                                    <input type="date" id="tempat_lahir" value="Jakarta, 01 Januari 1990">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="tanggal_masuk">Tanggal Masuk:</label>
-                                    <input type="text" id="tanggal_masuk" value="01 Januari 2020">
+                                    <input type="date" id="tanggal_masuk" value="01 Januari 2020">
                                 </div>
 
                                 <div class="form-group">

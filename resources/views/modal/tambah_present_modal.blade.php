@@ -3,7 +3,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Target Kehadiran</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="POST" action="{{ route('presence_store') }}" enctype="multipart/form-data">
@@ -11,12 +11,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Bulan</label>
-                        <select name="bulan_id" class="form-control" required>
-                            <option></option>
-                            @foreach ($bulan as $item)
-                                <option value="{{ $item->id }}"> {{ $item->nama_bulan }}</option>
-                            @endforeach
-                        </select>
+                        <input type="month" class="form-control" name="bulan_karyawan" value="{{old('bulan_karyawan')}}">
                     </div>
                     <div class="form-group mt-2">
                         <label>Presence</label>

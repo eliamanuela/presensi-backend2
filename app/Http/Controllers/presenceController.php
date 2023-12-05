@@ -17,14 +17,14 @@ class presenceController extends Controller
 {
     $request->validate([
         'user_id' => 'required|exists:users,id',
-        'bulan_id' => 'required|exists:bulan,id',
+        'bulan_karyawan' => 'required',
         'presence' => 'required|numeric',
     ]);
 
     DB::transaction(function () use ($request) {
         Presence::create([
             'user_id' => $request->user_id,
-            'bulan_id' => $request->bulan_id,
+            'bulan_karyawan' => $request->bulan_karyawan,
             'presence' => $request->presence,
         ]);
 

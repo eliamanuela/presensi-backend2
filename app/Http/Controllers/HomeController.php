@@ -39,8 +39,7 @@ class HomeController extends Controller
             $item->tanggal = $datetime->format('l, j F Y');
         }
         $kehadiran = Presence::query()
-        ->select('table_present.presence', 'bulan.nama_bulan', 'users.name')
-        ->join('bulan', 'table_present.bulan_id', '=', 'bulan.id')
+        ->select('table_present.presence', 'users.name', 'table_present.bulan_karyawan')
         ->join('users', 'table_present.user_id', '=', 'users.id')
         ->paginate(5);
 
@@ -53,16 +52,16 @@ class HomeController extends Controller
         ->select('users.name', 'users.id')
         ->where('role', 'user')
         ->get();
-        $bulan = bulanModel::query()
-            ->select('bulan.id','bulan.nama_bulan')
-            ->get();
+        // $bulan = bulanModel::query()
+        //     ->select('bulan.id','bulan.nama_bulan')
+        //     ->get();
 
         return view('home',compact([
             'presensis',
             'users',
             'user',
             'kehadiran',
-            'bulan',
+            // 'bulan',
         ]));
     }
 }

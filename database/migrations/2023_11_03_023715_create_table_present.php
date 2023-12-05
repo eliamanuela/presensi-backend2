@@ -16,7 +16,7 @@ class CreateTablePresent extends Migration
         Schema::create('table_present', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id');
-            $table->bigInteger('bulan_id');
+            $table->string('bulan_karyawan');
             $table->integer('presence');
             $table->timestamps();
         });

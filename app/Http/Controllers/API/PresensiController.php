@@ -160,7 +160,11 @@ class PresensiController extends Controller
             $presence = presence::where('user_id', Auth::user()->id)->first();
             $bulanModel = $presence->bulanModel; // Buat relasi di model Presence
 
-            $namabulan = $bulanModel ? $bulanModel->nama_bulan : null;
+            $namabulan = Presence::where('user_id', $user->id)->pluck('bulan_karyawan')
+            ->map(function ($bulan){
+                return
+                Carbon::parse($bulan)->format('F Y');
+            });
 
             $target_kehadiran = Presence::where('user_id', Auth::user()->id)->pluck('presence');
 

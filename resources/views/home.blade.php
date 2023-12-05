@@ -115,7 +115,7 @@
                 <table class="table table-hover my-0">
                     <thead>
                         <tr>
-                            <th>Bulan</th>
+                            <th>Bulan Target</th>
                             <th class="d-none d-xl-table-cell">Kehadiran</th>
                             <th class="d-none d-xl-table-cell">User</th>
                         </tr>
@@ -123,7 +123,7 @@
                     <tbody>
                         @forelse($kehadiran as $data)
                         <tr>
-                            <td>{{$data->nama_bulan}}</td>
+                            <td>{{ Carbon\Carbon::parse($data->bulan_karyawan)->format('F Y') }}</td>
                             <td class="d-none d-xl-table-cell">{{$data->presence}}</td>
                             <td class="d-none d-xl-table-cell">{{$data->name}}</td>
                         </tr>

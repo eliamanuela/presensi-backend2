@@ -11,7 +11,7 @@ class presence extends Model
     protected $table = 'table_present';
     protected $fillable = [
         'user_id',
-        'bulan_id',
+        'bulan_karyawan',
         'presence',
         'total_presence',
     ];

@@ -39,3 +39,4 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('save-presensi', [PresensiController::class, 'savePresensi']);
     Route::post('save-total-presensi', [PresensiController::class, 'saveTotalPresensi']);
 });
+

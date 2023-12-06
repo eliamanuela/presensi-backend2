@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Absensi;
 use App\Models\presence;
 use Illuminate\Http\Request;
 use App\Models\Presensi;
+use App\Models\User;
 use  Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Exception;
@@ -182,5 +184,51 @@ class PresensiController extends Controller
                 'message' => 'Terjadi kesalahan saat mengambil data total presensi: ' . $e->getMessage()
             ]);
         }
+    }
+
+    public function saveAbsensi(Request $request)
+    {
+        // Validasi data dari request jika diperlukan
+        $request->validate([
+            'keterangan' => 'required',
+        ]);
+
+        // Mendapatkan ID pengguna yang terautentikasi
+        $userId = auth()->id();
+
+        // Mendapatkan tanggal saat ini
+        $currentDate = now()->format('Y-m-d');
+
+        // Mencari absensi terakhir pengguna pada hari yang sama
+        $lastAbsensi = Absensi::where('user_id', $userId)
+            ->whereDate('tanggal', $currentDate)
+            ->latest()
+            ->first();
+
+        // Jika pengguna sudah melakukan absensi pada hari yang sama, kirim respons dengan pesan kesalahan
+        if ($lastAbsensi) {
+            return response()->json(['Warning' => 'Anda sudah melakukan absensi hari ini'], 400);
+        }
+
+        // Jika belum, simpan data absensi dengan tanggal saat ini
+        Absensi::create([
+            'user_id' => $userId,
+            'tanggal' => $currentDate,
+            'keterangan' => $request->keterangan,
+        ]);
+
+        // Dapatkan informasi pengguna
+        $user = User::find($userId);
+
+        // Berikan respons dengan informasi pengguna dan pesan sukses
+        return response()->json([
+            'message' => 'Absensi berhasil disimpan',
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'keterangan' => $request->keterangan,
+            ],
+        ], 200);
     }
 }

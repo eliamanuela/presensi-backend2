@@ -45,9 +45,16 @@ class HomeController extends Controller
 
         $users = User::query()
         ->select('users.*')
+        ->selectSub(function ($query) {
+            $query->selectRaw('COUNT(*)')
+            ->from('presensis')
+            ->whereColumn('users.id', 'presensis.user_id')
+            ->groupBy('presensis.user_id');
+        }, 'total_presensi')
         ->where('role', 'user')
-        ->where('status', 'off')
+        ->leftJoin('presensis', 'users.id', '=', 'presensis.user_id')
         ->paginate(5);
+
         $user = User::query()
         ->select('users.name', 'users.id')
         ->where('role', 'user')
